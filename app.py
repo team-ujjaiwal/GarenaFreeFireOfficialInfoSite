@@ -142,6 +142,7 @@ def format_response(data):
             "CsRankPoint": data.get("basicInfo", {}).get("csRankingPoints"),
             "EquippedWeapon": data.get("basicInfo", {}).get("weaponSkinShows", []),
             "ReleaseVersion": data.get("basicInfo", {}).get("releaseVersion"),
+            "ResolvedRegion": "PK",  # Added field
             "ShowBrRank": data.get("basicInfo", {}).get("showBrRank"),
             "ShowCsRank": data.get("basicInfo", {}).get("showCsRank"),
             "Title": data.get("basicInfo", {}).get("title")
@@ -159,42 +160,60 @@ def format_response(data):
             "GuildOwner": str(data.get("clanBasicInfo", {}).get("captainId"))
         },
         "captainBasicInfo": {
-            "EquippedWeapon": data.get("captainBasicInfo", {}).get("weaponSkinShows", []),
-            "accountId": str(data.get("captainBasicInfo", {}).get("accountId")),
-            "accountType": data.get("captainBasicInfo", {}).get("accountType"),
-            "badgeCnt": data.get("captainBasicInfo", {}).get("badgeCnt"),
-            "badgeId": str(data.get("captainBasicInfo", {}).get("badgeId")),
-            "bannerId": str(data.get("captainBasicInfo", {}).get("bannerId")),
-            "createAt": str(data.get("captainBasicInfo", {}).get("createAt")),
-            "csMaxRank": data.get("captainBasicInfo", {}).get("csMaxRank"),
-            "csRank": data.get("captainBasicInfo", {}).get("csMaxRank"),
-            "csRankingPoints": data.get("captainBasicInfo", {}).get("csRankingPoints"),
-            "exp": data.get("captainBasicInfo", {}).get("exp"),
-            "headPic": str(data.get("captainBasicInfo", {}).get("headPic")),
-            "lastLoginAt": str(data.get("captainBasicInfo", {}).get("lastLoginAt")),
-            "level": data.get("captainBasicInfo", {}).get("level"),
-            "liked": data.get("captainBasicInfo", {}).get("liked"),
-            "maxRank": data.get("captainBasicInfo", {}).get("maxRank"),
-            "nickname": data.get("captainBasicInfo", {}).get("nickname"),
-            "rank": data.get("captainBasicInfo", {}).get("maxRank"),
-            "rankingPoints": data.get("captainBasicInfo", {}).get("rankingPoints"),
-            "region": data.get("captainBasicInfo", {}).get("region"),
-            "releaseVersion": data.get("captainBasicInfo", {}).get("releaseVersion"),
-            "seasonId": data.get("captainBasicInfo", {}).get("seasonId"),
-            "showBrRank": data.get("captainBasicInfo", {}).get("showBrRank"),
-            "showCsRank": data.get("captainBasicInfo", {}).get("showCsRank"),
-            "title": data.get("captainBasicInfo", {}).get("title")
+            "accountId": str(data.get("basicInfo", {}).get("accountId", "") or str(data.get("clanBasicInfo", {}).get("captainId", "")),
+            "accountPrefers": {},  # Added empty object
+            "accountType": data.get("basicInfo", {}).get("accountType"),
+            "badgeCnt": data.get("basicInfo", {}).get("badgeCnt"),
+            "badgeId": data.get("basicInfo", {}).get("badgeId"),
+            "bannerId": data.get("basicInfo", {}).get("bannerId"),
+            "createAt": str(data.get("basicInfo", {}).get("createAt")),
+            "csMaxRank": data.get("basicInfo", {}).get("csMaxRank"),
+            "csRank": data.get("basicInfo", {}).get("csMaxRank"),  # Same as csMaxRank
+            "csRankingPoints": data.get("basicInfo", {}).get("csRankingPoints"),
+            "exp": data.get("basicInfo", {}).get("exp"),
+            "externalIconInfo": {  # Added field
+                "showType": "ExternalIconShowType_FRIEND",
+                "status": "ExternalIconStatus_NOT_IN_USE"
+            },
+            "hasElitePass": True,  # Added field
+            "headPic": data.get("basicInfo", {}).get("headPic"),
+            "lastLoginAt": str(data.get("basicInfo", {}).get("lastLoginAt")),
+            "level": data.get("basicInfo", {}).get("level"),
+            "liked": data.get("basicInfo", {}).get("liked"),
+            "maxRank": data.get("basicInfo", {}).get("maxRank"),
+            "nickname": data.get("basicInfo", {}).get("nickname"),
+            "rank": data.get("basicInfo", {}).get("maxRank"),  # Same as maxRank
+            "rankingPoints": data.get("basicInfo", {}).get("rankingPoints"),
+            "region": data.get("basicInfo", {}).get("region"),
+            "releaseVersion": data.get("basicInfo", {}).get("releaseVersion"),
+            "role": 4,  # Added field (assuming default value)
+            "seasonId": data.get("basicInfo", {}).get("seasonId"),
+            "showBrRank": data.get("basicInfo", {}).get("showBrRank"),
+            "showCsRank": data.get("basicInfo", {}).get("showCsRank"),
+            "socialHighLightsWithBasicInfo": {},  # Added empty object
+            "title": data.get("basicInfo", {}).get("title"),
+            "weaponSkinShows": data.get("basicInfo", {}).get("weaponSkinShows", [])
         },
         "creditScoreInfo": {
-            "creditScore": data.get("creditScoreInfo", {}).get("creditScore"),
-            "periodicSummaryEndTime": str(data.get("creditScoreInfo", {}).get("periodicSummaryEndTime")),
-            "periodicSummaryStartTime": str(data.get("creditScoreInfo", {}).get("periodicSummaryStartTime"))
+            "creditScore": data.get("creditScoreInfo", {}).get("creditScore", 100),  # Default 100
+            "periodicSummaryEndTime": str(data.get("creditScoreInfo", {}).get("periodicSummaryEndTime", "")),
+            "rewardState": "REWARD_STATE_UNCLAIMED"  # Added field
         },
-        "petInfo": data.get("petInfo", {}),
+        "petInfo": {
+            "exp": data.get("petInfo", {}).get("exp", 0),
+            "id": data.get("petInfo", {}).get("id", 0),
+            "isSelected": data.get("petInfo", {}).get("isSelected", False),
+            "level": data.get("petInfo", {}).get("level", 1),
+            "name": data.get("petInfo", {}).get("name", ""),
+            "selectedSkillId": data.get("petInfo", {}).get("selectedSkillId", 0),
+            "skinId": data.get("petInfo", {}).get("skinId", 0)
+        },
         "socialinfo": {
-            "AccountLanguage": data.get("socialInfo", {}).get("language"),
-            "AccountPreferMode": data.get("socialInfo", {}).get("modePrefer"),
-            "AccountSignature": data.get("socialInfo", {}).get("signature")
+            "accountId": str(data.get("basicInfo", {}).get("accountId", "")),
+            "language": data.get("socialInfo", {}).get("language", "Language_EN"),
+            "modePrefer": data.get("socialInfo", {}).get("modePrefer", "ModePrefer_BR"),
+            "rankShow": "RankShow_CS",  # Added field
+            "signature": data.get("socialInfo", {}).get("signature", "")
         }
     }
 
